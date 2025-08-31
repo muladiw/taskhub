@@ -1,27 +1,22 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:taskhub/model/task.dart';
-import 'package:taskhub/model/user.dart';
 import 'package:http/http.dart' as http;
 
 // Dummy API Service
 class ApiService {
-  static const String baseUrl = 'https://api.taskmanager.com';
   static final FlutterSecureStorage _storage = FlutterSecureStorage();
 
   static final int limit = 10;
-
-  static final Map<String, User> users = {
-    'user123': User(id: 'user123', email: 'user@example.com'),
-  };
 
   // Authentication
   static Future<Map<String, dynamic>> login(
     String email,
     String password,
   ) async {
-    final url = 'http://10.137.43.200:8000/auth';
+    final url = '${dotenv.env['API_URL']}/auth';
     final uri = Uri.parse(url);
     final response = await http.post(
       uri,
@@ -43,7 +38,7 @@ class ApiService {
     String email,
     String password,
   ) async {
-    final url = 'http://10.137.43.200:8000/user';
+    final url = '${dotenv.env['API_URL']}/user';
     final uri = Uri.parse(url);
     final response = await http.post(
       uri,
@@ -65,12 +60,8 @@ class ApiService {
     return await _storage.read(key: 'refresh_token');
   }
 
-  static Future<String?> getStoredUserId() async {
-    return await _storage.read(key: 'user_id');
-  }
-
   static Future<String> refreshToken() async {
-    final url = 'http://10.137.43.200:8000/auth';
+    final url = '${dotenv.env['API_URL']}/auth';
     final uri = Uri.parse(url);
     String? token = await getStoredToken();
     final response = await http.put(uri, body: {"refreshToken": token});
@@ -86,7 +77,7 @@ class ApiService {
 
   // Task CRUD operations
   static Future<List<Task>> getTasks([int startPage = 0]) async {
-    final url = 'http://10.137.43.200:8000/task';
+    final url = '${dotenv.env['API_URL']}/task';
     final uri = Uri.parse(url).replace(
       queryParameters: {
         'start': startPage.toString(),
@@ -116,7 +107,7 @@ class ApiService {
   }
 
   static Future<void> createTask(String title, String status) async {
-    final url = 'http://10.137.43.200:8000/task';
+    final url = '${dotenv.env['API_URL']}/task';
     final uri = Uri.parse(url);
     final accessToken = await refreshToken();
     final response = await http.post(
@@ -138,7 +129,7 @@ class ApiService {
     String? status,
     bool? isCompleted,
   }) async {
-    final url = 'http://10.137.43.200:8000/task';
+    final url = '${dotenv.env['API_URL']}/task';
     final uri = Uri.parse('$url/$taskId');
     final accessToken = await refreshToken();
     final response = await http.put(
@@ -155,7 +146,7 @@ class ApiService {
   }
 
   static Future<void> deleteTask(String taskId) async {
-    final url = 'http://10.137.43.200:8000/task';
+    final url = '${dotenv.env['API_URL']}/task';
     final uri = Uri.parse('$url/$taskId');
     final accessToken = await refreshToken();
     final response = await http.delete(
