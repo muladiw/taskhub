@@ -83,6 +83,7 @@ go run cmd/migration/main.go
 
 ```bash
 cd api
+go mod tidy
 go run cmd/web/main.go
 ```
 
@@ -90,6 +91,7 @@ go run cmd/web/main.go
 
 ```bash
 cd web
+npm i
 npm run dev
 ```
 
@@ -97,5 +99,6 @@ npm run dev
 
 ```bash
 cd mobile
+flutter pub get
 flutter run
 ```
