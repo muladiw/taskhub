@@ -1,6 +1,6 @@
 package model
 
 type AddUserRequest struct {
-	Password string `json:"password" validate:"required,max=100"`
-	Name     string `json:"name" validate:"required,max=100"`
+	Password string `json:"password" validate:"required"`
+	Email     string `json:"email" validate:"required,email"`
 }

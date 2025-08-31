@@ -1,9 +1,9 @@
 // export * from "@/components/layout/access";
-export * from '@/components/base/breadcrumb';
-export * from '@/components/base/card';
-export * from '@/components/layout/layoutPage';
-export * from '@/components/base/table';
-// export * from "@/components/base/skeleton";
+export * from "@/components/base/breadcrumb";
+export * from "@/components/base/card";
+export * from "@/components/layout/layoutPage";
+export * from "@/components/base/table";
+export * from "@/components/base/skeleton";
 // export * from "@/components/examination";
 // export * from "@/components/base/editor";
 // export * from "@/components/cart";

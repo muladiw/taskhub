@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"taskhub/internal/config"
 
@@ -15,24 +16,23 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	dbHost := os.Getenv("DB_HOST")
-	fmt.Println(dbHost)
 	db := config.NewDatabase()
-	// validate := config.NewValidator()
-	// app := config.NewFiber()
+	validate := config.NewValidator()
+	app := config.NewFiber()
 
-	// config.Bootstrap(&config.BootstrapConfig{
-	// 	DB:       db,
-	// 	App:      app,
-	// 	Log:      log,
-	// 	Validate: validate,
-	// 	Config:   viperConfig,
-	// 	Producer: producer,
-	// })
+	config.Bootstrap(&config.BootstrapConfig{
+		DB:       db,
+		App:      app,
+		Validate: validate,
+	})
 
-	// webPort := viperConfig.GetInt("web.port")
-	// err := app.Listen(fmt.Sprintf(":%d", webPort))
-	// if err != nil {
-	// 	log.Fatalf("Failed to start server: %v", err)
-	// }
+	port, err := strconv.Atoi(os.Getenv("PORT"))
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = app.Listen(fmt.Sprintf(":%d", port))
+	if err != nil {
+		fmt.Printf("Failed to start server: %v", err)
+	}
 }
