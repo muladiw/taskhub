@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:taskhub/constants.dart';
+import 'package:taskhub/providers/auth_provider.dart';
 import 'package:taskhub/screen/login/login_screen.dart';
-import 'package:taskhub/service/api.dart';
 import 'package:taskhub/theme.dart';
+import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -31,7 +32,10 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() => _isLoading = true);
 
     try {
-      await ApiService.signup(_emailController.text, _passwordController.text);
+      await context.read<AuthProvider>().signup(
+        _emailController.text,
+        _passwordController.text,
+      );
       if (!mounted) return;
 
       Navigator.pushReplacement(

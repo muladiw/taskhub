@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:taskhub/model/task.dart';
-import 'package:taskhub/service/api.dart';
+import 'package:taskhub/providers/task_provider.dart';
 import 'package:taskhub/theme.dart';
+import 'package:provider/provider.dart';
 
 class TaskFormScreen extends StatefulWidget {
   final Task? task;
@@ -40,10 +41,13 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
     try {
       if (widget.task == null) {
         // Create new task
-        await ApiService.createTask(_titleController.text, _status ?? '');
+        await context.read<TaskProvider>().createTask(
+          _titleController.text,
+          _status ?? '',
+        );
       } else {
         // Update existing task
-        await ApiService.updateTask(
+        await context.read<TaskProvider>().updateTask(
           widget.task!.id,
           title: _titleController.text,
           status: _status,

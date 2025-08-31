@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:taskhub/providers/auth_provider.dart';
 import 'package:taskhub/screen/login/signup_screen.dart';
 import 'package:taskhub/screen/task/task_screen.dart';
 import 'package:taskhub/service/api.dart';
 import 'package:taskhub/theme.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,8 +34,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _checkAuthStatus() async {
-    await Future.delayed(Duration(seconds: 1)); // Simulate splash delay
-
     String? token = await ApiService.getStoredToken();
 
     if (!mounted) return;
@@ -52,7 +52,10 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     try {
-      await ApiService.login(_emailController.text, _passwordController.text);
+      await context.read<AuthProvider>().login(
+        _emailController.text,
+        _passwordController.text,
+      );
 
       if (!mounted) return;
 
@@ -72,8 +75,35 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  // Future<void> _login() async {
+  //   if (!_formKey.currentState!.validate()) return;
+
+  //   setState(() => _isLoading = true);
+
+  //   try {
+  //     await ApiService.login(_emailController.text, _passwordController.text);
+
+  //     if (!mounted) return;
+
+  //     Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => TaskListScreen()),
+  //     );
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(e.toString().replaceFirst("Exception: ", "")),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //   } finally {
+  //     setState(() => _isLoading = false);
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
+    final auth = context.watch<AuthProvider>();
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20),
