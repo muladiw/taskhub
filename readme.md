@@ -74,6 +74,7 @@ API_URL=http://10.137.43.200:8000
 
 ```bash
 cd api
+go mod tidy
 go run cmd/migration/main.go
 ```
 
