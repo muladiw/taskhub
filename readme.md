@@ -72,6 +72,8 @@ API_URL=http://10.137.43.200:8000
 
 ### API (Golang)
 
+> Create database first before running migration
+
 ```bash
 cd api
 go mod tidy
